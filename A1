@@ -1,0 +1,33 @@
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @param {number} x
+ * @param {number} y
+ * @return {boolean}
+ */
+var isCousins = function(root, x, y) {
+     const depths = []
+    const cousinsParents = [];
+
+    (function traverse(node, depth, parent) {
+        if (!node) return
+        if (node.val === x || node.val === y) {
+            cousinsParents.push(parent)
+            depths.push(depth)
+        }
+        node.left && traverse(node.left, depth + 1, node.val)
+        node.right && traverse(node.right, depth + 1, node.val)
+    })(root, 1, root.val)
+    
+    if (depths.length !== cousinsParents.length) return false
+    
+    return (depths[0] === depths[1]) && 
+        (cousinsParents[0] !== cousinsParents[1])
+};
